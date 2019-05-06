@@ -5,11 +5,13 @@ import Action from './Action'
 import SelectExecutor from './SelectExecutor'
 import SelectStatus from './SelectStatus'
 import SearchTasks from './SearchTasks'
-import '../styles/App.css'
 
 // Главный компонент, который отрисовывает таблицу.
+// Перед отрисовкой списка массив tasks из state'a проходит через
+// фильтр в функции showList, тем самым основной массив не изменяется
+// (только при изменении статуса).
 // Вся математика, по возможности, перенесена в дочерние компоненты,
-// в этом же только логика отрисовки списка, в зависимости от выбранного селектора 
+// в этом же только логика отрисовки списка, в зависимости от флага 
 // и логика поведения localStorage'a. Пара слов про сервер в конце :)
 
 class App extends Component {
@@ -34,6 +36,9 @@ class App extends Component {
     this.actionsLocalStorage('save')
   }
 
+  // Обертка для работы с localStorage'ем. По возможности и для других
+  // функций делал обертки так, что бы в такой функции была только одна
+  // логика, но способов несколько (пытался избежать и 'GodClass' и 'dry')
   actionsLocalStorage(command) {
     switch(command) {
       case 'save':
@@ -49,6 +54,7 @@ class App extends Component {
     }
   }
 
+  // Перед каждым изменением статуса происходит очистка флагов в show.
   changeFilter(flag, event) {
     this.setState({show: {
       flag: null,
@@ -68,6 +74,7 @@ class App extends Component {
     }
   }
 
+  // В зависимости от флагов происходит та или иная фильтрация отрисованного списка
   showList(condition) {
     if(condition.filter == null && condition.flag == null) {
       return this.state.tasks
@@ -88,7 +95,8 @@ class App extends Component {
   // 1. При каждом изменении кнопками действия обновленный массив 'tasks' 
   // вносится в хранилище
   // 2. При перезагрузки страницы происходит проверка localStorage. Если он не пустой, 
-  // то данные из него идут в state. Если пустой, то данные подгружаются с сервера
+  // то данные из него идут в state. Если пустой, то данные подгружаются с сервера.
+  // Остальные 2 массива в всегда подгружаются с сервера
   // 3. Для очищения хранилища есть кнопка
 
   async componentDidMount() {
@@ -173,6 +181,6 @@ class App extends Component {
 // З.Ы. По собственной инициативе, вместо начальной подгрузки json напрямую в компонент
 // написал простой dev/built-сервер, в котором и происходит получение первичных данных,
 // путем запроса из компонента fetch'ем.
-// Сам сервер сначала компелирует данные из src, затем разворачивается на dist'е
+// Сам сервер сначала компелирует данные из src в dist, затем разворачивает dist
 
 export default App

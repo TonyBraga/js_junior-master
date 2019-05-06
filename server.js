@@ -1,5 +1,4 @@
 const express = require('express')
-const bodyParser = require('body-parser')
 const webpack = require('webpack')
 const config = require('./webpack.config')
 
