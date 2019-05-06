@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "first_name": "Иван",
+      "last_name": "Иванов"
+    },
+    {
+      "id": 2,
+      "first_name": "Петр",
+      "last_name": "Петров"
+    },
+    {
+      "id": 3,
+      "first_name": "Сидор",
+      "last_name": "Сидоров"
+    }
+  ]
+}
